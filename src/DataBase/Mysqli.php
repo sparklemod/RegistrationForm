@@ -30,6 +30,19 @@ class Mysqli
         return $this->connect->query($sql)->fetch_assoc();
     }
 
-    
+    public function insert(string $sql)
+    {
+
+        if ($this->connect->query($sql) === TRUE) {
+            echo "Вы успешно зарегистрировались";
+            return mysqli_insert_id($sql);
+
+        } else {
+            echo "Error: " . $sql . "<br>" . $this->connect->error;
+        }
+
+    }
+
+
 
 }

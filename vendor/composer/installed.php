@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'sweetperson/registration',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => NULL,
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => '7eae153bd946af25e04858f622d5c8e879ee63b9',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -152,9 +152,9 @@
             'dev_requirement' => false,
         ),
         'sweetperson/registration' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => NULL,
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '7eae153bd946af25e04858f622d5c8e879ee63b9',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
