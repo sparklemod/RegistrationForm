@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataBase;
+namespace App\Services\DataBase;
 
 class Mysqli
 {
@@ -35,7 +35,7 @@ class Mysqli
 
         if ($this->connect->query($sql) === TRUE) {
             echo "Вы успешно зарегистрировались";
-            return mysqli_insert_id($sql);
+            return $this->connect->insert_id;
 
         } else {
             echo "Error: " . $sql . "<br>" . $this->connect->error;

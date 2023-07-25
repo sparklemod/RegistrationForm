@@ -12,7 +12,7 @@
 <body>
 <div class="container mt-4">
     <h1>Форма регистрации</h1>
-    <form action="registration.php" method="post">
+    <form method="post">
         <div class="mb-3">
             <label for="Name" class="form-label">Имя пользователя</label>
             <input type="text" class="form-control" name="name" id="Name">
