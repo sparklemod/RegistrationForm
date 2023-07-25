@@ -22,8 +22,8 @@
                                      style="width: 180px; border-radius: 10px;">
                             </div>
                             <div class="flex-grow-1 ms-3">
-                                <h5 class="mb-1"><?php echo e($user['name']); ?></h5>
-                                <p class="mb-2 pb-1" style="color: #2b2a2a;"><?php echo e($user['email']); ?></p>
+                                <h5 class="mb-1">{{$user['name']}}</h5>
+                                <p class="mb-2 pb-1" style="color: #2b2a2a;">{{$user['email']}}</p>
                                 <div class="d-flex justify-content-start rounded-3 p-2 mb-2"
                                      style="background-color: #efefef;">
                                     <div>
@@ -40,8 +40,9 @@
                                     </div>
                                 </div>
                                 <div class="d-flex pt-1">
-                                    <button type="button" class="btn btn-outline-primary me-1 flex-grow-1">Удалить</button>
-                                    <button type="button" class="btn btn-primary flex-grow-1">Выйти</button>
+                                    <a href="/?c=user&m=edit" class="btn btn-outline-primary me-1 flex-grow-1">Изменить
+                                    </a>
+                                    <a href="/?c=user&m=logOut" class="btn btn-primary flex-grow-1">Выйти</a>
                                 </div>
                             </div>
                         </div>
@@ -52,4 +53,3 @@
     </div>
 </section>
 
-<?php /**PATH C:\OSPanel\domains\localhost\src\Views/User/info.blade.php ENDPATH**/ ?>

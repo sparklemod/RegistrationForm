@@ -2,7 +2,7 @@
 
 namespace App\Services\DataBase;
 
-class Mysqli
+class Mysqli implements DBInterface
 {
     private const HOST = '127.0.0.1';
     private const USER_NAME = 'root';
@@ -25,14 +25,13 @@ class Mysqli
         }
     }
 
-    public function select(string $sql)
+    public function select(string $sql): array
     {
         return $this->connect->query($sql)->fetch_assoc();
     }
 
-    public function insert(string $sql)
+    public function insert(string $sql): int
     {
-
         if ($this->connect->query($sql) === TRUE) {
             echo "Вы успешно зарегистрировались";
             return $this->connect->insert_id;
@@ -41,8 +40,13 @@ class Mysqli
             echo "Error: " . $sql . "<br>" . $this->connect->error;
         }
 
+        return 0;
     }
 
+    public function update(string $sql): bool
+    {
+        return $this->connect->query($sql);
+    }
 
 
 }

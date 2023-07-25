@@ -4,14 +4,11 @@ namespace App\Services;
 
 class SessionPHP
 {
+    private const DAY_IN_MINUTES = 60 * 24;
+
     public function start()
     {
-
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-
+        session_start(['cookie_lifetime' => self::DAY_IN_MINUTES]);
     }
 
     public function setUserID(int $id)
@@ -27,6 +24,12 @@ class SessionPHP
     public function isAuth(): bool
     {
         return (isset($_SESSION['userID']));
+    }
+
+    public function destroySession()
+    {
+        session_destroy();
+        setcookie("PHPSESSID", '', time() - 360000, '/');
     }
 
 }
