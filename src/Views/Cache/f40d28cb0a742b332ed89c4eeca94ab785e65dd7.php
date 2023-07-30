@@ -14,8 +14,8 @@
     <h1>Авторизация</h1>
     <form method="post">
         <div class="mb-3">
-            <label for="Name" class="form-label">Имя пользователя</label>
-            <input type="text" class="form-control" name="name" id="Name">
+            <label for="email" class="form-label">Введите email</label>
+            <input type="text" class="form-control" name="email" id="email">
         </div>
         <div class="mb-3">
             <label for="Pass" class="form-label">Пароль</label>

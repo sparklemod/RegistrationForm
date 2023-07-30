@@ -2,21 +2,54 @@
 
 namespace App\Services\DataBase;
 
+use PDO;
+
 class MyPDO implements DBInterface
-{//в конструкторе методы пдо //принимается отдается то же самое что в ит
+{
+    private const DSN = 'mysql:dbname=UsersData;host=127.0.0.1;port=3306';
+    private const USER_NAME = 'root';
+    private const PASSWORD = '';
 
-    public function select(string $sql): array
+    private $connect;
+
+    public function __construct()
     {
-        // TODO: Implement select() method.
+        try {
+            $this->connect = new PDO(self::DSN, self::USER_NAME, self::PASSWORD);
+        } catch (\PDOException $exception) {
+            echo 'Connection error: ' . $exception->getMessage();
+        }
     }
 
-    public function insert(string $sql): int
+    public function select(string $sql, array $userData): array
     {
-        // TODO: Implement insert() method.
+        $stmt = $this->connect->prepare($sql);
+        $stmt->execute($userData);
+        $a = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($a === false) { //селект обязан вернуть массив, а фетч возвр фолс
+            return [];
+        } else {
+            return $a;
+        }
     }
 
-    public function update(string $sql): bool
+    public function insert(string $sql, array $userData): int
     {
-        // TODO: Implement update() method.
+        $stmt = $this->connect->prepare($sql);
+        try {
+            $stmt->execute($userData);
+            return $this->connect->lastInsertId();
+        } catch (\PDOException $exception) {
+            echo 'Ошибка при добавлении нового пользователя ' . $exception->getMessage();
+        }
+
+        return 0;
+    }
+
+    public function update(string $sql, $userData): bool
+    {
+        $stmt = $this->connect->prepare($sql);
+        return $stmt->execute($userData);
     }
 }

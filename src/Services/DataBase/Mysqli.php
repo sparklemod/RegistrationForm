@@ -25,25 +25,25 @@ class Mysqli implements DBInterface
         }
     }
 
-    public function select(string $sql): array
+    public function select(string $sql, $userData): array
     {
         return $this->connect->query($sql)->fetch_assoc();
     }
 
-    public function insert(string $sql): int
+    public function insert(string $sql, $userData): int
     {
         if ($this->connect->query($sql) === TRUE) {
             echo "Вы успешно зарегистрировались";
             return $this->connect->insert_id;
 
         } else {
-            echo "Error: " . $sql . "<br>" . $this->connect->error;
+            echo 'Error: ' . $sql . '<br>' . $this->connect->error;
         }
 
         return 0;
     }
 
-    public function update(string $sql): bool
+    public function update(string $sql,$userData): bool
     {
         return $this->connect->query($sql);
     }

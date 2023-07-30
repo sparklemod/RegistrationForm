@@ -2,16 +2,16 @@
 
 namespace App\Controllers;
 
-use App\Services\DataBase\Mysqli;
+use App\Services\DataBase\MyPDO;
 
 class User extends BaseController
 {
-    private Mysqli $mysqli;
+    private MyPDO $myPDO;
 
     public function __construct()
     {
         parent::__construct();
-        $this->mysqli = new Mysqli();
+        $this->myPDO = new MyPDO();
     }
 
     public function registration()
@@ -21,13 +21,15 @@ class User extends BaseController
         if (empty($_POST)) {
             return;
         }
-//ошибки обработать разные + предложение авторизации
-        if ($this->inputCheck() && !$this->isUserExist($_POST['email'])) {
-            $name = $_POST['name'];
-            $email = $_POST['email'];
-            $pass = $_POST['pass'];
 
-            $id = $this->mysqli->insert("INSERT INTO `Users` (`name`,`email`,`pass`) VALUES ('$name','$email','$pass')");
+        if ($this->inputCheck() && !$this->isUserExist($_POST['email'])) {
+            $userData = array(
+                'name' => $_POST['name'],
+                'email' => $_POST['email'],
+                'pass' => md5($_POST['pass'])
+            );
+
+            $id = $this->myPDO->insert("INSERT INTO Users (`name`, `email`, `pass`) VALUES (:name, :email, :pass)", $userData);
             $this->session->setUserID($id);
             header("Location: /?c=user&m=account");
 
@@ -40,10 +42,13 @@ class User extends BaseController
     {
         $this->render('User/authorization', []);
 
-        if(isset($_POST['name']) && isset($_POST['pass'])) {
-            $name = $_POST['name'];
-            $pass = $_POST['pass'];
-            $id = $this->mysqli->select("SELECT id FROM `Users` WHERE name='{$name}' AND pass='{$pass}'");
+        if (isset($_POST['email']) && isset($_POST['pass'])) {
+            $userData = array(
+                'email' => $_POST['email'],
+                'pass' => md5($_POST['pass'])
+            );
+
+            $id = $this->myPDO->select("SELECT id FROM Users WHERE `email`= :email AND `pass` = :pass", $userData);
             $this->session->setUserID($id['id']);
             header("Location: /?c=user&m=account");
         }
@@ -59,12 +64,14 @@ class User extends BaseController
         $this->render('User/edit', ['user' => $this->getInfo()]);
 
         if ($this->inputCheck()) {
-            $name = $_POST['name'];
-            $email = $_POST['email'];
-            $pass = $_POST['pass'];
+            $userData = [
+                ':name' => $_POST['name'],
+                ':email' => $_POST['email'],
+                ':pass' => md5($_POST['pass']),
+                ':id' => $this->session->getUserID()
+            ];
 
-            $id = $this->session->getUserID();
-            $this->mysqli->update("UPDATE `Users` SET  `email` = '$email', `pass` = '$pass', `name` = '$name' WHERE id='$id'");
+            $this->myPDO->update("UPDATE Users SET `name`=:name, `email` = :email, `pass` = :pass WHERE `id` =:id", $userData);
             header("Location: /?c=user&m=account");
         }
     }
@@ -81,13 +88,19 @@ class User extends BaseController
             header("Location: /?c=user&m=logIn");
         } else {
             $id = $this->session->getUserID();
-            return $this->mysqli->select("SELECT * FROM `Users` WHERE id=" . $id);
+            $userData = array(
+                'id' => $id
+            );
+            return $this->myPDO->select("SELECT * FROM Users WHERE `id`=:id", $userData);
         }
     }
 
     private function isUserExist(string $email): bool
     {
-        return !empty($this->mysqli->select("SELECT id FROM `Users` WHERE email='{$email}'"));
+        $userData = [
+            ':email' => $email
+        ];
+        return !empty($this->myPDO->select("SELECT id FROM Users WHERE `email` =:email", $userData));
     }
 
     private function inputCheck(): bool
