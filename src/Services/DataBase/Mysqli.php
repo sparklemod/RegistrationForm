@@ -11,6 +11,7 @@ class Mysqli implements DBInterface
 
     private $connect;
 
+
     public function __construct()
     {
         $this->connect = mysqli_connect(
@@ -19,6 +20,7 @@ class Mysqli implements DBInterface
             self::PASSWORD,
             self::DB_NAME
         );
+        //mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
         if (!$this->connect) {
             die ("Failed to connect to MySQL: " . mysqli_error($this->connect));
@@ -27,25 +29,51 @@ class Mysqli implements DBInterface
 
     public function select(string $sql, $userData): array
     {
-        return $this->connect->query($sql)->fetch_assoc();
+        $sql = $this->binding($sql, $userData);
+        $stmt = $this->connect->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = $result->fetch_all(MYSQLI_ASSOC);
+        if (count($data) > 1) {
+            return $data;
+        } else {
+            return (current($data) ?: []); //проверка на бул ?: а ?? проверка на NULL
+        }
+
     }
 
     public function insert(string $sql, $userData): int
     {
-        if ($this->connect->query($sql) === TRUE) {
-            echo "Вы успешно зарегистрировались";
-            return $this->connect->insert_id;
+        try {
+            $sql = $this->binding($sql, $userData);
+            $stmt = $this->connect->prepare($sql);
+            $stmt->execute();
 
-        } else {
-            echo 'Error: ' . $sql . '<br>' . $this->connect->error;
+            return $this->connect->insert_id;
+        } catch (\mysqli_sql_exception $exception) {
+            echo 'Ошибка при добавлении нового пользователя ' . $exception->getMessage();
         }
 
         return 0;
     }
 
-    public function update(string $sql,$userData): bool
+    public function update(string $sql, $userData): bool
     {
-        return $this->connect->query($sql);
+        $sql = $this->binding($sql, $userData);
+        $stmt = $this->connect->prepare($sql);
+        $stmt->execute();
+
+        return TRUE;
+    }
+
+    private function binding(string $sql, $userData): string
+    {
+        foreach ($userData as $key => $value) {
+            $sql = str_replace($key, var_export($value, TRUE), $sql); //если тру то возвр. значение, если фолс то выводит на экран.
+        }
+
+        return $sql;
     }
 
 
