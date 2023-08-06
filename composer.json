@@ -19,6 +19,7 @@
     "ext-mysqli": "*",
     "jenssegers/blade": "^1.4",
     "ext-pdo": "*",
-    "doctrine/annotations": "^2.0"
+    "doctrine/annotations": "^2.0",
+    "doctrine/migrations": "^3.5"
   }
 }

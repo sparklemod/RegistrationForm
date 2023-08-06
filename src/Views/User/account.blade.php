@@ -40,9 +40,9 @@
                                     </div>
                                 </div>
                                 <div class="d-flex pt-1">
-                                    <a href="/?c=user&m=edit" class="btn btn-outline-primary me-1 flex-grow-1">Изменить
+                                    <a href="/?c=newUser&m=edit" class="btn btn-outline-primary me-1 flex-grow-1">Изменить
                                     </a>
-                                    <a href="/?c=user&m=logOut" class="btn btn-primary flex-grow-1">Выйти</a>
+                                    <a href="/?c=newUser&m=logOut" class="btn btn-primary flex-grow-1">Выйти</a>
                                 </div>
                             </div>
                         </div>

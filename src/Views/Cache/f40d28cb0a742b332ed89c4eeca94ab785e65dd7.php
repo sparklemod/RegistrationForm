@@ -23,6 +23,14 @@
         </div>
         <button type="submit" class="btn btn-primary">Войти</button>
     </form>
+
+    <?php if($msg != ''): ?>
+        <div class="alert alert-danger mt-4" role="alert">
+            <?php echo e($msg); ?>
+
+        </div>
+    <?php endif; ?>
+
 </div>
 </body>
 </html><?php /**PATH C:\OSPanel\domains\localhost\src\Views/User/authorization.blade.php ENDPATH**/ ?>

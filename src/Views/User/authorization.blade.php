@@ -23,6 +23,13 @@
         </div>
         <button type="submit" class="btn btn-primary">Войти</button>
     </form>
+
+    @if ($msg != '')
+        <div class="alert alert-danger mt-4" role="alert">
+            {{$msg}}
+        </div>
+    @endif
+
 </div>
 </body>
 </html>

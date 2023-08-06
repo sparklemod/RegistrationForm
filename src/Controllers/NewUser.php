@@ -7,11 +7,12 @@ use Doctrine\ORM\EntityManager;
 
 class NewUser extends BaseController
 {
-    private EntityManager $em;
+    private $repository;
+
     public function __construct()
     {
         parent::__construct();
-        $this->em = Doctrine::getEntityManager();
+        $this->repository = $this->em->getRepository(\App\Entity\User::class);
     }
 
     public function registration()
@@ -24,9 +25,9 @@ class NewUser extends BaseController
         if ($this->inputCheck() && !$this->isUserExist($_POST['email'])) {
             $user = new \App\Entity\User();
             $user->setEmail($_POST['email'])->setName($_POST['name'])->setPass(md5($_POST['pass']));
-            $this->em->persist($user); //persist принимает класс сущности. делает подготовку к записи. далее нужно сд запись
-            $this->em->flush(); //делает запись
-            $user->getId();
+            $this->em->persist($user);
+            $this->em->flush();
+            $this->session->setUserID($user->getId());
             header("Location: /?c=NewUser&m=account");
         } else {
             echo "Некорректные данные";
@@ -35,23 +36,57 @@ class NewUser extends BaseController
 
     public function account()
     {
-        $this->render('newUser/account', ['user' => $this->getInfo()]);
+        $this->render('User/account', ['user' => $this->getInfo()]);
+    }
+
+    public function logIn()
+    {
+        $error = '';
+
+        if (isset($_POST['email']) && isset($_POST['pass'])) {
+            $user = $this->repository->findOneBy(['email' => $_POST['email'], 'pass' => md5($_POST['pass'])]);
+
+            if ($user) {
+                $this->session->setUserID($user->getId());
+                header("Location: /?c=newUser&m=account");
+            }
+
+            $error = "Такого пользователя нет";
+        }
+
+        $this->render('User/authorization', ['msg' => $error]);
     }
 
     public function edit()
     {
-        $this->render('newUser/edit', ['user' => $this->getInfo()]);
+        $this->render('User/edit', ['user' => $this->getInfo()]);
 
-        if ($this->inputCheck() && !$this->isUserExist($_POST['email'])) {
-            $user = new \App\Entity\User();
-            $this->em->findBy('id');
+        if ($this->inputCheck()) {
+            $user = $this->repository->find($this->session->getUserID());
             $user->setEmail($_POST['email'])->setName($_POST['name'])->setPass(md5($_POST['pass']));
-            $this->em->persist($user); //persist принимает класс сущности. делает подготовку к записи. далее нужно сд запись
-            $this->em->flush(); //делает запись
-            $user->getId();
+            $this->em->persist($user);
+            $this->em->flush();
 
             header("Location: /?c=newUser&m=account");
         }
+    }
+
+    public function logOut()
+    {
+        $this->session->destroySession();
+        header("Location: /?c=newUser&m=logIn");
+    }
+
+    private function getInfo()
+    {
+        if (!$this->session->isAuth()) {
+            header("Location: /?c=newUser&m=logIn");
+        } else {
+            $id = $this->session->getUserID();
+            $user = $this->repository->find($id);
+            return $user->toArray();
+        }
+
     }
 
     private function isUserExist(string $email): bool

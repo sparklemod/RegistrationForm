@@ -4,17 +4,14 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\ManyToMany;
 
-
 /**
  * @ORM\Entity
- * @ORM\Table(name="Users")
+ * @ORM\Table(name="Books")
  */
-class User extends BaseEntity
+class Book extends BaseEntity
 {
     /**
      * @ORM\Id
@@ -31,26 +28,27 @@ class User extends BaseEntity
     /**
      * @ORM\Column(type="string")
      */
-    private string $email;
+    private string $author;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private string $year;
 
     /**
      * @ORM\Column(type="string")
      */
-    private string $pass;
+    private string $edition;
 
     /**
-     * @ManyToMany(targetEntity="Book")
-     * @JoinTable(name="Users_Books",
-     *      joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="book_id", referencedColumnName="id")}
-     *      )
-     * @var Collection<int, Book>
+     * @ManyToMany(targetEntity="User", mappedBy="books")
+     * @var Collection<int, User>
      */
-    private Collection $books;
+    private Collection $users;
 
     public function __construct()
     {
-        $this->books = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     /**
@@ -63,9 +61,9 @@ class User extends BaseEntity
 
     /**
      * @param int|null $id
-     * @return User
+     * @return Book
      */
-    public function setId(?int $id): User
+    public function setId(?int $id): Book
     {
         $this->id = $id;
         return $this;
@@ -81,9 +79,9 @@ class User extends BaseEntity
 
     /**
      * @param string $name
-     * @return User
+     * @return Book
      */
-    public function setName(string $name): User
+    public function setName(string $name): Book
     {
         $this->name = $name;
         return $this;
@@ -92,61 +90,79 @@ class User extends BaseEntity
     /**
      * @return string
      */
-    public function getEmail(): string
+    public function getAuthor(): string
     {
-        return $this->email;
+        return $this->author;
     }
 
     /**
-     * @param string $email
-     * @return User
+     * @param string $author
+     * @return Book
      */
-    public function setEmail(string $email): User
+    public function setAuthor(string $author): Book
     {
-        $this->email = $email;
+        $this->author = $author;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getPass(): string
+    public function getYear(): string
     {
-        return $this->pass;
+        return $this->year;
     }
 
     /**
-     * @param string $pass
-     * @return User
+     * @param string $year
+     * @return Book
      */
-    public function setPass(string $pass): User
+    public function setYear(string $year): Book
     {
-        $this->pass = $pass;
+        $this->year = $year;
         return $this;
     }
 
     /**
-     * @return Book[]
+     * @return string
      */
-    public function getBooks(): array
+    public function getEdition(): string
     {
-        return $this->books->toArray();
+        return $this->edition;
     }
 
     /**
-     * @param Book[] $books
-     * @return User
+     * @param string $edition
+     * @return Book
      */
-    public function setBooks(array $books): User
+    public function setEdition(string $edition): Book
     {
-        $this->books = new ArrayCollection($books);
+        $this->edition = $edition;
         return $this;
     }
 
-    //alt + insert = добавить геттеры сеттеры
+    /**
+     * @return User[]
+     */
+    public function getUsers(): array
+    {
+        return $this->users->toArray();
+    }
+
+    /**
+     * @param User[] $users
+     * @return Book
+     */
+    public function setUsers(array $users): Book
+    {
+        $this->users = new ArrayCollection($users);
+        return $this;
+    }
+
     protected function getArray(): array
     {
         return get_object_vars($this);
 
     }
+
 }
