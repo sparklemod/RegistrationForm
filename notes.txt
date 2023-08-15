@@ -1,0 +1,78 @@
+Doctrine - синглтон
+
+Установка миграции
+1. для файлов миграции создаем отд папку Migration
+    Устанавливаем доктрину-миграцию:
+    composer require doctrine/migrations
+
+    запускаем появившийся в вендоре файл
+    ./vendor/bin/doctrine-migrations
+
+2. Настройка файла конфигурации
+
+    2.1 устанавливаем пакет ямл
+    composer require symfony/yaml
+
+    2.2 В корневой папке создаем migration.yml файл. меняем пути на
+    'App\Services\DataBase\Migrations': /src/Services/DataBase/Migrations
+
+    table_storage:
+       table_name: doctrine_migration_versions
+       version_column_name: version
+       version_column_length: 191
+       executed_at_column_name: executed_at
+       execution_time_column_name: execution_time
+
+    migrations_paths:
+       'MyProject\Migrations': /data/doctrine/migrations/lib/MyProject/Migrations
+       'MyProject\Component\Migrations': ./Component/MyProject/Migrations
+
+    all_or_nothing: true
+    transactional: true
+    check_database_platform: true
+    organize_migrations: none
+
+    connection: null
+    em: null
+
+    2.3 жмем команду
+    ./vendor/bin/doctrine-migrations migrate --all-or-nothing
+    При использовании параметра all_or_nothing несколько миграций, выполненных одновременно, будут объединены в одну
+    транзакцию. Если одна миграция завершится неудачей, все миграции будут откатаны
+
+3. Создаем синглтон DataBase/Doctrine.php, в кот описываем подключение к БД
+
+4. для ORM
+composer require doctrine/orm
+?или
+создаем отдельную папку /Database/DoctrineProxy.
+ВЫполняем команду, кот создает классы для entity manager:
+    php ./bin/doctrine orm:generate-proxies
+
+5.Создаем в копрне папку config и создаем файл cli-config.php
+<?php
+
+require 'vendor/autoload.php';
+
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Tools\Setup;
+use Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager;
+use Doctrine\Migrations\DependencyFactory;
+
+$config = new PhpFile('migrations.php'); // Or use one of the Doctrine\Migrations\Configuration\Configuration\* loaders
+
+$paths = [__DIR__.'/lib/MyProject/Entities'];
+$isDevMode = true;
+
+$ORMconfig = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
+$entityManager = EntityManager::create(['driver' => 'pdo_sqlite', 'memory' => true], $ORMconfig);
+
+return DependencyFactory::fromEntityManager($config, new ExistingEntityManager($entityManager));
+
+6. Создаем в корне папку Entity - тут будут описаны наши сущности
+
+composer require doctrine/annotations - просто установка пакета
+
+Миграция:
+./vendor/bin/doctrine-migrations migrations:diff
+./vendor/bin/doctrine-migrations migrations:migrate

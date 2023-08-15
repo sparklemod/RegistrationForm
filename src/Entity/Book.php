@@ -33,7 +33,7 @@ class Book extends BaseEntity
     /**
      * @ORM\Column(type="date")
      */
-    private string $year;
+    private \DateTimeInterface $year;
 
     /**
      * @ORM\Column(type="string")
@@ -117,7 +117,7 @@ class Book extends BaseEntity
      * @param string $year
      * @return Book
      */
-    public function setYear(string $year): Book
+    public function setYear(\DateTimeInterface $year): Book
     {
         $this->year = $year;
         return $this;
