@@ -37,30 +37,41 @@ class Book extends BaseController
 
     }
 
+    public function list()
+    {
+        $this->render('Book/list', ['books' => $this->getBooks()]);
+    }
+
 
     public function edit()
     {
 
-        $this->render('Book/edit', ['book' => $this->getInfo()]);
+        $books = $this->em->getRepository(\App\Entity\Book::class);
 
-        if ($this->inputCheck()) {
-            $user = $this->repository->find($this->session->getUserID());
-            $user->setEmail($_POST['email'])->setName($_POST['name'])->setPass(md5($_POST['pass']));
-            $this->em->persist($user);
-            $this->em->flush();
-
-            header("Location: /?c=newUser&m=account");
+        $book = $books->find($_GET['id']);
+        $this->render('Book/edit', ['book' => $book->toArray()]);
+        if (empty($_POST)) {
+            return;
         }
+        $year= new \DateTime($_POST['year']);
+        $book->setName($_POST['name'])
+            ->setAuthor($_POST['author'])
+            ->setEdition($_POST['edition'])
+            ->setYear($year);
+        $this->em->persist($book);
+        $this->em->flush();
+
+        header("Location: /?c=book&m=list");
+
     }
 
-    private function getInfo()
+    private function getBooks()
     {
         if (!$this->session->isAuth()) {
             header("Location: /?c=newUser&m=logIn");
         } else {
             $id = $this->session->getUserID();
-            $user = $this->repository->find($id);
-            return $user->toArray();
+            return $this->repository->find($id)->getBooks();
         }
 
     }

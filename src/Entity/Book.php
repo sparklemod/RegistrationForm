@@ -110,7 +110,7 @@ class Book extends BaseEntity
      */
     public function getYear(): string
     {
-        return $this->year;
+        return $this->year->format("Y");
     }
 
     /**

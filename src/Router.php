@@ -18,7 +18,7 @@ class Router
             die("Некорректный запрос");
         }
 
-        $class = new $controller(); //взяли название и по нему создали экземпляр
+        $class = new $controller();
 
         if (!method_exists($class,$method)){
             die("Некорректный запрос");

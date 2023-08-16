@@ -27,7 +27,8 @@
                                 <div class="d-flex justify-content-start rounded-3 p-2 mb-2"
                                      style="background-color: #efefef;">
                                     <div>
-                                        <p class="small text-muted mb-1">Articles</p>
+                                        <a href="/?c=book&m=list" class="small text-muted mb-1">Books
+                                        </a>
                                         <p class="mb-0">41</p>
                                     </div>
                                     <div class="px-3">
