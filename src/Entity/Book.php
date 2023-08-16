@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
+use App\Repository\BookRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\ManyToMany;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=BookRepository::class)
  * @ORM\Table(name="Books")
  */
 class Book extends BaseEntity
@@ -156,6 +157,17 @@ class Book extends BaseEntity
     public function setUsers(array $users): Book
     {
         $this->users = new ArrayCollection($users);
+        return $this;
+    }
+
+    /**
+     * @param User $user
+     * @return $this
+     */
+    public function addUser(User $user): Book
+    {
+
+        $this->users->add($user);
         return $this;
     }
 

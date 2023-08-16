@@ -14,12 +14,16 @@
   "require": {
     "doctrine/orm": "^2.16",
     "doctrine/dbal": "^3.2",
+    "doctrine/doctrine-module": "^5.3",
     "symfony/yaml": "^5.4",
     "symfony/cache": "^5.4",
     "ext-mysqli": "*",
     "jenssegers/blade": "^1.4",
     "ext-pdo": "*",
-    "doctrine/annotations": "^2.0",
     "doctrine/migrations": "^3.5"
+  },
+  "require-dev": {
+    "vimeo/psalm": "^5.14",
+    "phpunit/phpunit": "^9.6"
   }
 }

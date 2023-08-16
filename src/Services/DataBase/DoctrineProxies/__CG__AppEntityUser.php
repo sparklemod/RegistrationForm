@@ -294,6 +294,17 @@ class User extends \App\Entity\User implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function addBooks(\App\Entity\Book $book): \App\Entity\User
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addBooks', [$book]);
+
+        return parent::addBooks($book);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function toArray(): array
     {
 

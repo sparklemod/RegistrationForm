@@ -261,7 +261,7 @@ class Book extends \App\Entity\Book implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setYear(string $year): \App\Entity\Book
+    public function setYear(\DateTimeInterface $year): \App\Entity\Book
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setYear', [$year]);
@@ -311,6 +311,17 @@ class Book extends \App\Entity\Book implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUsers', [$users]);
 
         return parent::setUsers($users);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addUser(\App\Entity\User $user): \App\Entity\Book
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addUser', [$user]);
+
+        return parent::addUser($user);
     }
 
     /**

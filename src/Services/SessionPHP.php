@@ -18,7 +18,7 @@ class SessionPHP
 
     public function getUserID(): int
     {
-        return $_SESSION['userID'];
+        return $_SESSION['userID'] ?? 0;
     }
 
     public function isAuth(): bool

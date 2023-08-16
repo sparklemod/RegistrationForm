@@ -11,42 +11,44 @@
 </head>
 <body>
 <div class="container mt-4">
-    <h1>Список книг</h1>
-
-    <?php $__currentLoopData = $books; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $book): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-        <p>This is user <?php echo e($book->getName()); ?></p>
-
-
-    <form method="post">
-        <div class="mb-3">
-            <label for="ID" class="form-label">ID</label>
-            <input type="text" class="form-control" name="id" id="ID" value="<?php echo e($book->getId()); ?>">
-        </div>
-        <div class="mb-3">
-            <label for="Name" class="form-label">Название книги</label>
-            <input type="text" class="form-control" name="name" id="Name" value="<?php echo e($book->getName()); ?>">
-        </div>
-        <div class="mb-3">
-            <label for="Author" class="form-label">Автор</label>
-            <input type="author" class="form-control" name="author" id="Author" value="<?php echo e($book->getAuthor()); ?>">
-        </div>
-        <div class="mb-3">
-            <label for="Edition" class="form-label">Издание</label>
-            <input type="edition" class="form-control" name="edition" id="Edition" value="<?php echo e($book->getEdition()); ?>">
-        </div>
-        <div class="mb-3">
-            <label for="Year" class="form-label">Год</label>
-            <input type="year" class="form-control" name="year" id="Year" value="<?php echo e($book->getYear()); ?>">
-        </div>
+    <h1 class="mb-4"> Список книг</h1>
+    <div class="pt-1">
+        <a href="/?c=book&m=create" class="btn btn-primary mb-2">Добавить</a>
+    </div>
 
 
-        <div class="pt-1">
-            <a href="/?c=book&m=edit&id=<?php echo e($book->getId()); ?>" class="btn btn-primary ">Редактировать</a>
-            <a href="/?c=newUser&m=logOut" class="btn btn-primary ">Удалить</a>
-        </div>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Author</th>
+            <th scope="col">Edition</th>
+            <th scope="col">Year</th>
+            <th scope="col">Act</th>
+        </tr>
+        </thead>
+        <tbody>
 
-    </form>
-    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <?php $__currentLoopData = $books; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $book): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <tr>
+                <th scope="col"><?php echo e($book->getId()); ?></th>
+                <th scope="col"><?php echo e($book->getName()); ?></th>
+                <th scope="col"><?php echo e($book->getAuthor()); ?></th>
+                <th scope="col"><?php echo e($book->getEdition()); ?></th>
+                <th scope="col"><?php echo e($book->getYear()); ?></th>
+                <th scope="col">
+
+                <div class="pt-1">
+                    <a href="/?c=book&m=edit&id=<?php echo e($book->getId()); ?>" class="btn btn-primary ">Ред.</a>
+                    <a href="/?c=book&m=delete&id=<?php echo e($book->getId()); ?>" class="btn btn-primary ">Удалить</a>
+                </div>
+                </th>
+            </tr>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+        </tbody>
+    </table>
 </div>
 </body>
 </html><?php /**PATH C:\OSPanel\domains\localhost\src\Views/Book/list.blade.php ENDPATH**/ ?>

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\JoinColumn;
@@ -11,7 +12,7 @@ use Doctrine\ORM\Mapping\ManyToMany;
 
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="Users")
  */
 class User extends BaseEntity
@@ -140,6 +141,17 @@ class User extends BaseEntity
     public function setBooks(array $books): User
     {
         $this->books = new ArrayCollection($books);
+        return $this;
+    }
+
+    /**
+     * @param Book $book
+     * @return $this
+     */
+    public function addBook(Book $book): User
+    {
+
+        $this->books->add($book);
         return $this;
     }
 
