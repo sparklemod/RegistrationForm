@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Repository\UserRepository;
 use App\Services\DataBase\Doctrine;
 use Doctrine\ORM\EntityManager;
 
@@ -12,7 +13,7 @@ class NewUser extends BaseController
     public function __construct()
     {
         parent::__construct();
-        $this->repository = $this->em->getRepository(\App\Entity\User::class);
+        $this->repository = new UserRepository();
     }
 
     public function registration()
@@ -92,9 +93,7 @@ class NewUser extends BaseController
     private function isUserExist(string $email): bool
     {
         $user =
-            $this->em
-                ->getRepository(\App\Entity\User::class)
-                ->findBy(['email' => $email]); //вернет или юзера или нул
+            $this->repository->findBy(['email' => $email]); //вернет или юзера или нул
 
         if (!$user) {
             return FALSE;

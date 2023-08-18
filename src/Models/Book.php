@@ -27,7 +27,13 @@ class Book
 
     public function getByUserId($id)
     {
-        return (new UserRepository())->find($id)->getBooks();
+        $user = (new UserRepository())->find($id);
+
+        if ($user) {
+            return $user->getBooks();
+        } else {
+            return [];
+        }
     }
 
 }

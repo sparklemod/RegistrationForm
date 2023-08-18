@@ -13,4 +13,9 @@ use Doctrine\ORM\EntityRepository;
  */
 class BookRepository extends BaseRepository
 {
+
+    protected function getEntity(): string
+    {
+        return Book::class;
+    }
 }

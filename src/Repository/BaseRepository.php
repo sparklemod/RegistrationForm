@@ -2,14 +2,17 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Services\DataBase\Doctrine;
 use Doctrine\ORM\EntityRepository;
 
-class BaseRepository extends EntityRepository
+abstract class BaseRepository extends EntityRepository
 {
     public function __construct()
     {
         $em = Doctrine::getEntityManager();
-        parent::__construct($em, $em->getClassMetadata(static::class));
+        parent::__construct($em, $em->getClassMetadata($this->getEntity())); //через статик получает текущий класс а не наследника
     }
+
+    protected abstract function getEntity(): string;
 }
