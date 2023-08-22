@@ -23,7 +23,7 @@
         </div>
         <div class="mb-3">
             <label for="Pass" class="form-label">Пароль</label>
-            <input type="password" class="form-control" name="pass" id="Pass" value="<?php echo e($user['pass']); ?>">
+            <input type="password" class="form-control" name="pass" id="Pass">
         </div>
 
         <button type="submit" class="btn btn-primary">Сохранить</button>

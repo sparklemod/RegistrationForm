@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Entity\Book as BookEntity;
+use App\Repository\BookRepository;
 use App\Repository\UserRepository;
 use App\Services\DataBase\Doctrine;
 use DateTime;
@@ -22,7 +23,25 @@ class Book
         $user->addBook($book);
         Doctrine::getEntityManager()->persist($book);
         Doctrine::getEntityManager()->flush();
+    }
 
+    public function edit(int $bookID, array $data)
+    {
+        $book = (new BookRepository())->find($bookID);
+        $year = new \DateTime($_POST['year']);
+        $book->setName($data['name'])
+            ->setAuthor($data['author'])
+            ->setEdition($data['edition'])
+            ->setYear($year);
+        Doctrine::getEntityManager()->persist($book);
+        Doctrine::getEntityManager()->flush();
+    }
+
+    public function delete(int $bookID)
+    {
+        $book = (new BookRepository())->find($_GET['id']);
+        Doctrine::getEntityManager()->remove($book);
+        Doctrine::getEntityManager()->flush();
     }
 
     public function getByUserId($id)

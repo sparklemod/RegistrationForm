@@ -29,7 +29,7 @@ class SessionPHP
     public function destroySession()
     {
         session_destroy();
-        setcookie("PHPSESSID", '', time() - 36000000, '/');
+        setcookie("PHPSESSID", '', time() - 360000, '/');
     }
 
 }

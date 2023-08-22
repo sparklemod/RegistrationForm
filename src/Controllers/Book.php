@@ -44,21 +44,15 @@ class Book extends BaseController
             return;
         }
 
-        $year = new \DateTime($_POST['year']); //дейт тайм спросить
-        $book->setName($_POST['name'])
-            ->setAuthor($_POST['author'])
-            ->setEdition($_POST['edition'])
-            ->setYear($year);
-        $this->em->persist($book);
-        $this->em->flush();
+        (new \App\Models\Book())->edit($_GET['id'], $_POST);
         header("Location: /?c=book&m=list");
+
     }
 
     public function delete()
     {
-        $book = (new BookRepository())->find($_GET['id']);
-        $this->em->remove($book);
-        $this->em->flush();
+        (new \App\Models\Book())->delete($_GET['id']);
+
         header("Location: /?c=book&m=list");
     }
 
