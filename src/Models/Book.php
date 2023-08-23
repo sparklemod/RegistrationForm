@@ -37,14 +37,14 @@ class Book
         Doctrine::getEntityManager()->flush();
     }
 
-    public function delete(int $bookID)
+    public function delete(int $bookID): void
     {
-        $book = (new BookRepository())->find($_GET['id']);
+        $book = (new BookRepository())->find($bookID);
         Doctrine::getEntityManager()->remove($book);
         Doctrine::getEntityManager()->flush();
     }
 
-    public function getByUserId($id)
+    public function getByUserId(int $id): array
     {
         $user = (new UserRepository())->find($id);
 
