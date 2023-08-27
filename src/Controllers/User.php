@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\Uploader;
+
 class User extends BaseController
 {
     private \App\Models\User $model;
@@ -14,49 +16,54 @@ class User extends BaseController
 
     public function registration()
     {
-        $this->render('User/registration', []);
+        if (!empty($_POST)) {
+            $userID = $this->model->registration($_POST);
 
-        if (empty($_POST)) {
-            return;
+            if ($userID !== 0) {
+                $this->session->setUserID($userID);
+                header("Location: /?c=User&m=account");
+                exit;
+            }
+
+            $error = "Некорректные данные";
         }
 
-        $userID = $this->model->registration($_POST);
-
-        if ($userID === 0) {
-            echo "Некорректные данные";
-            exit;
-        }
-
-        $this->session->setUserID($userID);
-        header("Location: /?c=User&m=account");
+        $this->render('User/registration', ['message' => ($error ?? '')]);
     }
 
     public function account()
     {
-        $user = $this->model->getInfo();
-
-        if (!$user) {
+        if (!$this->session->isAuth()) {
             header("Location: /?c=User&m=logIn");
+            exit;
         }
 
-        $this->render('User/account', ['user' => $user]);
+        if (isset($_POST['uploadIcon'])) {
+            $result = (new Uploader())->accountIconUpdate($this->session->getUserID());
+
+            if ($result !== TRUE) {
+                $error = $result;
+            }
+        }
+
+        $user = $this->model->getInfo();
+        $this->render('User/account', ['user' => $user, 'message' => $error ?? '']);
     }
 
     public function logIn()
     {
-        $error = '';
-
         if (isset($_POST['email']) && isset($_POST['pass'])) {
             $userID = $this->model->logIn($_POST);
+
             if ($userID) {
                 $this->session->setUserID($userID);
                 header("Location: /?c=User&m=account");
-            } else {
-                $error = "Такого пользователя нет";
             }
+
+            $error = "Такого пользователя нет";
         }
 
-        $this->render('User/authorization', ['msg' => $error]);
+        $this->render('User/authorization', ['message' => ($error ?? '')]);
     }
 
     public function edit()

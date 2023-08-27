@@ -40,6 +40,11 @@ class User extends BaseEntity
     private string $pass;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    private string $icon;
+
+    /**
      * @ManyToMany(targetEntity="Book")
      * @JoinTable(name="Users_Books",
      *      joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},
@@ -152,6 +157,17 @@ class User extends BaseEntity
     {
 
         $this->books->add($book);
+        return $this;
+    }
+
+    public function getIcon(): string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(string $icon): User
+    {
+        $this->icon = $icon;
         return $this;
     }
 

@@ -17,10 +17,23 @@
                     <div class="card-body p-4">
                         <div class="d-flex text-black">
                             <div class="flex-shrink-0">
-                                <img src="https://is2-ssl.mzstatic.com/image/thumb/Music114/v4/73/da/73/73da735a-d2b1-f63b-1185-499fc3de4b18/artwork.jpg/1200x1200bf-60.jpg"
-                                     alt="Generic placeholder image" class="img-fluid"
-                                     style="width: 180px; border-radius: 10px;">
+
+                                <img
+                                        @if(!empty($user['icon']))
+                                            src="{{$user['icon']}}"
+                                        @else
+                                            src="https://is2-ssl.mzstatic.com/image/thumb/Music114/v4/73/da/73/73da735a-d2b1-f63b-1185-499fc3de4b18/artwork.jpg/1200x1200bf-60.jpg"
+                                        @endif
+                                        alt="Generic placeholder image" class="img-fluid"
+                                        style="width: 180px; border-radius: 10px;">
+                                <form enctype="multipart/form-data" method="post">
+                                    <input type="file" name="filename">
+                                    <input type="submit" name="uploadIcon" class="btn btn-outline-primary me-1 flex-grow-1"
+                                           value="Зарузить">
+                                </form>
                             </div>
+
+
                             <div class="flex-grow-1 ms-3">
                                 <h5 class="mb-1">{{$user['name']}}</h5>
                                 <p class="mb-2 pb-1" style="color: #2b2a2a;">{{$user['email']}}</p>
@@ -49,6 +62,11 @@
                         </div>
                     </div>
                 </div>
+                @if ($message != '')
+                    <div class="alert alert-danger mt-4" role="alert">
+                        {{$message}}
+                    </div>
+                @endif
             </div>
         </div>
     </div>

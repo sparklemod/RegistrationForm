@@ -42,6 +42,7 @@ class User
         return null;
     }
 
+
     public function edit(array $data): void
     {
         $user = $this->repository->find($this->session->getUserID());
@@ -57,13 +58,9 @@ class User
 
     private function isUserExist(string $email): bool
     {
-        $user = $this->repository->findBy(['email' => $email]);
+        $user = $this->repository->findOneBy(['email' => $email]);
 
-        if (!$user) {
-            return FALSE;
-        } else {
-            return TRUE;
-        }
+        return isset($user);
     }
 
     private function inputCheck(array $data): bool

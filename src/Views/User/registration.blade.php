@@ -27,6 +27,12 @@
             <input type="password" class="form-control" name="pass" id="Pass">
         </div>
         <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+
+        @if ($message != '')
+            <div class="alert alert-danger mt-4" role="alert">
+                {{$message}}
+            </div>
+        @endif
     </form>
 </div>
 </body>

@@ -24,9 +24,9 @@
         <button type="submit" class="btn btn-primary">Войти</button>
     </form>
 
-    @if ($msg != '')
+    @if ($message != '')
         <div class="alert alert-danger mt-4" role="alert">
-            {{$msg}}
+            {{$message}}
         </div>
     @endif
 

@@ -24,9 +24,9 @@
         <button type="submit" class="btn btn-primary">Войти</button>
     </form>
 
-    <?php if($msg != ''): ?>
+    <?php if($message != ''): ?>
         <div class="alert alert-danger mt-4" role="alert">
-            <?php echo e($msg); ?>
+            <?php echo e($message); ?>
 
         </div>
     <?php endif; ?>
