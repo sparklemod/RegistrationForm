@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Entity\User as UserEntity;
 use App\Repository\UserRepository;
 use App\Services\DataBase\Doctrine;
 use CarrionGrow\Uploader\Exception\Exception;

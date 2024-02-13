@@ -19,7 +19,7 @@ class Book extends BaseEntity
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      */
-    private ?int $id = null; //? значит что может быть null (эквивалент int|null)
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string")

@@ -11,8 +11,8 @@ class Router
         (new SessionPHP())->start();
 
         $pathController = "\App\Controllers";
-        $controller = $pathController . "\\" . ucfirst($_GET['c']); //преобразует первый символ строки в верхний регистр.
-        $method = strtolower($_GET['m']); //преобразовывает строку в нижний регистр.
+        $controller = $pathController . "\\" . ucfirst($_GET['c']);
+        $method = strtolower($_GET['m']);
 
         if (!class_exists($controller)){
             die("Некорректный запрос");

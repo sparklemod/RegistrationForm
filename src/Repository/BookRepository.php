@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Book;
-use App\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
 /**
